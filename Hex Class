@@ -1,0 +1,62 @@
+public class Hex {
+    private int value;
+
+    // Constructor that takes an integer value
+    public Hex(int value) {
+        this.value = value;
+    }
+
+    // Returns the integer value of the hex object
+    public int valueOf() {
+        return this.value;
+    }
+
+    
+    @Override
+    public String toString() {
+        return "0x" + Integer.toHexString(this.value).toUpperCase();
+    }
+
+    
+    public String toJSON() {
+        return toString();
+    }
+
+    // Adds another Hex object and returns a new Hex object
+    public Hex plus(Hex other) {
+        return new Hex(this.value + other.value);
+    }
+
+    // Subtracts another Hex object and returns a new Hex object
+    public Hex minus(Hex other) {
+        return new Hex(this.value - other.value);
+    }
+
+    // Adds an integer value and returns a new Hex object
+    public Hex plus(int number) {
+        return new Hex(this.value + number);
+    }
+
+    // Subtracts an integer value and returns a new Hex object
+    public Hex minus(int number) {
+        return new Hex(this.value - number);
+    }
+
+    // Parses a hexadecimal string and returns its integer value
+    public static int parse(String string) {
+        if (string.startsWith("0x")) {
+            return Integer.parseInt(string.substring(2), 16);
+        } else {
+            return Integer.parseInt(string, 16);
+        }
+    }
+
+    // Checks equality with another object; returns true if both are equal
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        Hex hex = (Hex) other;
+        return this.value == hex.value;
+    }
+}
