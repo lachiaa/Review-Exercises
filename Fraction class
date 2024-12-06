@@ -1,0 +1,64 @@
+public class Fraction implements Comparable<Fraction> {
+    private final long top; // Numerator
+    private final long bottom; // Denominator
+
+    public Fraction(long numerator, long denominator) {
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator cannot be zero.");
+        }
+        // Simplify the fraction and make sure the denominator is positive
+        long gcd = gcd(Math.abs(numerator), Math.abs(denominator));
+        numerator /= gcd;
+        denominator /= gcd;
+
+        // Ensure the denominator is always positive
+        if (denominator < 0) {
+            numerator = -numerator;
+            denominator = -denominator;
+        }
+
+        this.top = numerator;
+        this.bottom = denominator;
+    }
+
+    @Override
+    public int hashCode() {
+        return 17 * Long.hashCode(top) + Long.hashCode(bottom);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Fraction other = (Fraction) o;
+        return compareTo(other) == 0;
+    }
+
+    @Override
+    public int compareTo(Fraction f2) {
+        return Long.compare(this.top * f2.bottom, f2.top * this.bottom);
+    }
+
+    // Add two fractions
+    public Fraction add(Fraction f2) {
+        long newNumerator = this.top * f2.bottom + f2.top * this.bottom;
+        long newDenominator = this.bottom * f2.bottom;
+        return new Fraction(newNumerator, newDenominator); // Automatically reduces the fraction
+    }
+
+    // String representation of the fraction
+    @Override
+    public String toString() {
+        return top + "/" + bottom;
+    }
+
+    // Helper method to find the greatest common divisor
+    private static long gcd(long a, long b) {
+        while (b != 0) {
+            long temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+}
